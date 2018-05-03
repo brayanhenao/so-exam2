@@ -62,3 +62,27 @@ apt-get install tmux
 ```console
 nano ~/.tmux.conf
 ```
+Agregando estas líneas
+```
+# use C-a, since it's on the home row and easier to hit than C-b
+set-option -g prefix C-a
+unbind-key C-a
+bind-key C-a send-prefix
+set -g base-index 1
+
+# Easy config reload
+bind-key R source-file ~/.tmux.conf \; display-message "tmux.conf reloaded."
+
+# vi is good
+setw -g mode-keys vi
+
+# Setup 'v' to begin selection as in Vim
+bind-key -Tcopy-mode-vi v send -X begin-selection
+```
+Una vez realiazo estos pasos ya tendremos Tmux configurado con los keybinds personalizados.
+
+En este video se aprecia el uso del anterior punto:
+[![asciicast](https://asciinema.org/a/179538.png)](https://asciinema.org/a/179538)
+
+
+
