@@ -20,7 +20,6 @@ su operativos
 export ZSH="$HOME/.dotfiles/oh-my-zsh"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
-
 Pdta: Si no se tiene curl, se instala con el siguiente comando:
 ```console
 apt-get install curl
@@ -28,8 +27,13 @@ apt-get install curl
 
 3- Para configurar el accesso a git mediante un token personal, se utiliza el siguiente comando:
 ```console
- config remote.origin.url "https://bb6e9c33977eec34df142484d9cfd372084ce488@github.com/brayanhenao/so-exam2.git"
+git config remote.origin.url "https://adcb1c21ecf5f0416ad135dc1814c76f9554d97f@github.com/brayanhenao/so-exam2.git"
 ```
+
+En esa captura se aprecia el uso de zsh con git, mediante el llamado de gaa, gcmsg, ggp:
+
+![](images/commit_zsh.png)
+
 
 ## Instalación y configuración plugin zsh-autosuggestions
 
@@ -51,6 +55,12 @@ nano $ZSH_CUSTOM/soexam.zsh
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=yellow"
 source ~/.zshrc
 ```
+
+Ahora verificamos que los cambios del color fueron exitosos mediante estas dos capturas donde se muestra el autocompletado de comandos:
+
+![](images/zsh_customcolor.png)
+
+![](images/zsh_customcolor2.png)
 
 ## Instalación y configuración de Tmux
 
@@ -84,5 +94,66 @@ Una vez realiazo estos pasos ya tendremos Tmux configurado con los keybinds pers
 En este video se aprecia el uso del anterior punto:
 [![asciicast](https://asciinema.org/a/179538.png)](https://asciinema.org/a/179538)
 
+## Crear sesión en Tmux y separar pantalla en cuatro partes
+1- Se crea una sesión en Tmux de nombre so-exam2 con el siguiente comando:
+```console
+tmux new-session -s so-exam2
+```
+
+2- Una vez creada la sesión, se procede a dividir la pantalla en cuatro cuadrantes, esto se hace mediante el atajo de teclado que creamos previamente:
+```
+Ctrl + a + %   -> Divide la pantalla verticalmente
+Ctrl + a + "   -> Divide la pantalla horizontalmente
+```
+
+En esta imagen se aprecia la pantalla dividia ejecutando los comandos requeridos:
+
+![](images/tmux_4.png)
+
+## Aplicación programada conectada con Slack
+Esta aplicación requiere ciertas librerías para su usto, estas son instaladas mediante el gestionador de paquetes de python "pip", los siguientes comandos son para instalar estas librerías:
+
+**Slack client**
+```console
+pip install slackclient
+```
+**Python CLI**
+```console
+pip install pyCLI
+```
+
+**psutil**
+```console
+pip install psutil==4.3.0
+```
+
+### Creación del script
+Una vez realiazada la instalación de estas librerías, se procede a crear el script de python con nombre **codigo_punto6.py**. Se utiliza como base los ejemplos propuestos en [pyCLI](https://pythonhosted.org/pyCLI/), [psutil](https://pypi.python.org/pypi/psutil/4.3.0) y [Slack client](https://github.com/slackapi/python-slackclient) para crear este script:
+
+![](images/codigo_punto6.png)
+
+
+Una vez realizo el script, se prueba mediante el comando:
+
+```console
+python codigo_punto6.py
+```
+
+Y se verifica que este se encuentra funcionando, revisando el canal de slack como se aprecia en esta imagen:
+
+![](images/slack_test.png)
+
+
+### Programar la ejecución del script
+Para programar la ejecución díaria a las 08:00 AM todos los días del script previamente realizado, se utiliza el siguiente comando:
+
+```console
+crontab -e
+```
+
+El cual nos abre un editor de texto en el que debemos agregar la siguiente línea, que indica que será una tarea programada todos los días a las 08:00 AM:
+```
+0 8 * * * /usr/bin/python /home/operativos/Operativos/so-exam2/A00056004/codigo_punto6.py
+```
 
 
